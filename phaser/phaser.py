@@ -196,6 +196,9 @@ def parse_sample(sample_name, map_sample_column, bam_file, sample_out_path, cont
 
 	if sample_name in map_sample_column:
 		sample_column = map_sample_column[sample_name];
+	elif not sample_name and len(map_sample_column) == 1:
+		sample_columns = list(map_sample_column.values())
+		sample_column = sample_columns[0]
 	else:
 		fatal_error("Sample '%s' not found in the input VCF file." % (sample_name));
 
