@@ -37,6 +37,7 @@ def main():
 
 
 	# optional
+	parser.add_argument("--only_generate_allelic_counts", action="store_true", help="Only generate the allelic_counts.txt output file. Skip the steps that perform phasing.")
 	parser.add_argument("--python_string", default="python2.7", help="Command that specifies which python2.x interpreter has to be used, required for running read variant mapping script.")
 	parser.add_argument("--haplo_count_bam_exclude", default="", help="Comma separated list of BAMs to exclude when generating haplotypic counts (outputted in o.haplotypic_counts.txt). When left blank haplotypic counts will be generated for all input BAMs, otherwise will they will not be generated for the BAMs specified here. Specify libraries by index where 1 = first library in --bam list, 2 = second, etc...")
 	parser.add_argument("--haplo_count_blacklist", default="", help="BED file containing genomic intervals to be excluded from haplotypic counts. Reads from any variants which lie within these regions will not be counted for haplotypic counts.")
@@ -776,6 +777,9 @@ def process_vcf(stream_vcf, chromosome, contig_ban, set_haplo_blacklist,
 		del dict_variant_reads[key];
 
 	print_debug("     removed %d variants from memory in cleanup"%(len(remove_keys)));
+
+	if args.only_generate_allelic_counts:
+		return
 
 	# using only the overlapping SNP dictionary build haplotype blocks
 	fun_flush_print("#4. Identifying haplotype blocks...");
